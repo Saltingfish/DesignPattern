@@ -1,0 +1,175 @@
+在前面的学习中（参见前面的博客），我们学到了很多OO原则：
+    — 封装变化
+    —多用组合，少用继承
+    —针对接口/超类编程，不针对实现编程
+    —松耦合
+    —开闭原则
+    让我们从一个简单的类开始，看看如何将之改造成符合OO原则的类以及工厂模式在解耦中的威力。
+    class FoodStore {
+                   public Food  orderFood()   //通过此方法顾客从食物商店中得到食物
+                   {
+                          Food food=new Food();
+                          food.prepare();    // 准备食物
+                          food.cut();        // 将食物切好
+                          food.box(); // 包装好
+                          return food;
+                   }
+}
+这样写还不够，食物店里又不是只有一种food，我们要让食物店提供更多！
+  class FoodStore {
+public Food orderFood(String type) {
+Food food = null;
+if (type.equals("bread")) {
+food = new bread();
+}
+else if(type.endsWith("chicken"))
+{
+food=new chicken();
+}
+food.prepare();
+food.cut();
+food.box();
+return food;
+}
+}
+  这样我们让食物店提供了面包和鸡肉，他们分别是Food的子类，那我们要在添加一种食物（pizza）呢？这就又需要修改FoodStore的代码！这可不符合
+开闭原则！但是，从上面两个不同版本的类来看，可以分析出类中变化的部分：食物类型！
+  既然我们已经找到了变化的部分，根据封装变化的原则，就把这部分（对象的创建）独立开来。
+  class SimpleFactory {
+             public Food creatFood(String type)
+             {
+            Food food = null;
+          if (type.equals("bread")) {
+          food = new bread();
+          }
+          else if(type.endsWith("chicken"))
+          {
+          food=new chicken();
+          }
+          return food;
+             }
+}
+这样，我们就完成了今天第一个“模式”——简单工厂，在这个过程中，其实我们只做了一件事：将foodstore中创建对象的部分与其隔离开（其实工厂模式的目的就是封装对象的创建），即：封装变化
+下面是封装之后的FoodStore：
+class FoodStore {
+SimpleFactory factory;
+public FoodStore(SimpleFactory factory)
+{
+this.factory=factory;
+}
+public Food orderFood(String type) {
+Food food = factory.creatFood(type);
+food.prepare();
+food.cut();
+food.box();
+return food;
+}
+}
+由于创建对象的过程交给了工厂，所以如果再添加食物类别，只需要修改SimpleFactory类，这样FoodStore就符合了对修改关闭原则！ 
+简单工厂已经很厉害了！但是还不足以应付所有的情况，让我们看看工厂方法和抽象工厂的表现。
+问题1：假如有很多商店都向简单工厂去取对象，那么所有商店取得的面包对象和鸡肉对象都是一样的！我们想让不同商店里取得不同口味的食物！
+问题2：假如一个商店想要出售两种风味的鸡肉，简单工厂并不能很好的实现。
+对于这两个问题，虽然可以在简单工厂中加入多种xxxbread和xxxchicken 来解决，但是会产生很多问题！
+分析： 对于问题一，假设第n个商店分别需要n_bread和n_chicken，那么你需要在简单工厂里加入2*n个条件语句，但是，这2*n个语句里，其实只有2个
+是对其对应的商店有效的，其他的都是累赘！
+对于问题二， 假如有n种食物，m种口味，那就是m*n个条件语句，对某个商店来说，有用的其实只有m1*n1个，仍然是有很多冗余代码！
+细心的读者会发现，问题一可以看做问题二的子问题，并且都指向了代码的复用性！虽然简单工厂可以复用，但效率太低了！
+针对问题一，我们可以将那个具有2*n个条件语句的简单工厂分成n个工厂，与商店一一对应，这样解决了效率问题（不同的商店调用不同的工厂），但是，
+每个工厂类其实只为对应的商店服务，也就是说，每个工厂类都不需要复用却被我们独立开来！在前文提到过，工厂模式的目的是将对象的创建进行封装，那么
+能不能将这种封装放在“特殊”的地方呢？当然能！工厂方法模式就是将其放到子类上！
+工厂方法模式：定义了一个创建对象的接口，但由子类决定要实例化的类是哪一个。工厂方法让类把实例化推迟到子类。
+方法就是将对象创建部分声明为抽象方法，交给子类去实现，如下：
+abstract class Store {
+public Food orderFood(String type) {
+Food food = creatFood(type);
+food.prepare();
+food.cut();
+food.box();
+return food;
+}
+public abstract Food creatFood(String type); //抽象方法，父类并不知道具体的对象类型，这将由子类决定
+}
+工厂方法模式相比简单工厂更具有弹性，可以变更正在创建的产品，但是它也放弃了复用性！那怎么能够既保有弹性又能实现复用呢（这正是问题二所面临的问题）？
+不用多说，这个自然就是我们的抽象工厂模式，先看看定义吧！
+抽象工厂模式：提供一个接口，用于创建相关或依赖对象的家族，而不需要明确指定具体类。
+如下：
+interface abstract_Factory {
+                          public Food creatBread();
+                          public Food creatChicken();
+}
+    做两个实现类，如河北工厂和河南工厂，分别提供河北风味的面包，鸡肉和河南风味的面包，鸡肉，如下：
+                         河北工厂
+    ——————————————————————————————————————————————————————————————————————
+    class Hebei_Factory implements abstract_Factory {
+
+
+@Override
+public Food creatBread() {
+// TODO Auto-generated method stub
+
+return new Hebei_bread();
+}
+
+
+@Override
+public Food creatChicken() {
+// TODO Auto-generated method stub
+return new Hebei_chicken();
+}
+河南工厂
+————————————————————————————————————————————————————————————————
+class Henan_Factory implements abstract_Factory {
+
+
+@Override
+public Food creatBread() {
+// TODO Auto-generated method stub
+return new Henan_bread();
+}
+
+
+@Override
+public Food creatChicken() {
+// TODO Auto-generated method stub
+return new Henan_chicken();
+}
+
+
+}
+相应的商店及运行代码
+——————————————————————————————————————————————————————————————————
+class abstract_Factory_Story {
+
+Food food;
+
+public Food orderFood(String type,abstract_Factory factory) {
+if("bread".equals(type)){
+food = factory.creatBread();}
+else if("chicken".equals(type))
+{
+food = factory.creatChicken();
+}
+food.prepare();
+food.cut();
+food.box();
+return food;
+}
+public static void main(String[] args)
+{
+abstract_Factory_Story afs=new abstract_Factory_Story();
+afs.orderFood("bread", new Hebei_Factory());
+afs.orderFood("chicken", new Henan_Factory());
+}
+}
+                        运行结果
+————————————————————————————————————————————————————————————————————————————
+Hebei_bread:prepare............
+Hebei_bread:cutting............
+Hebei_bread:boxed............
+Henan_chicken:prepare............
+Henan_chicken:cutting............
+Henan_chicken:boxed............
+—————————————————————————————————————————————————————————————————————————————
+可以看出，运行时我们只要传入不同的工厂，就能得到不同风味的食物，各个工厂子类也能复用，在商店类中并不依赖具体类型（food是所有食物的超类），能够轻易的进行扩展而不用修改代码（type的判断放在工厂中会更好）。
+总结：纵览三种设计模式，可以发现简单工厂和工厂方法都可以看做抽象工厂的子模式，抽象工厂本身就是工厂方法组合而成（将对象的创建延迟到子工厂），而相应的每个子工厂，也都可以看做是一个简单工厂，只不过在抽象
+工厂里，运用了面对接口/超类编程的方法将商店类与子工厂具体类型解耦，使之更具有弹性。在很多情况下，简单工厂和工厂方法都能很好的替代抽象工厂，例如，在不需要复用的对象创建封装时，工厂方法比抽象工厂更合适，在创建对象的类型相对确定时（不需要弹性），用简单工厂也能胜任。

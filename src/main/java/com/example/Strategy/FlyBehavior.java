@@ -6,4 +6,5 @@ package com.example.Strategy;
 public interface FlyBehavior {
 
     void fly();
+
 }
