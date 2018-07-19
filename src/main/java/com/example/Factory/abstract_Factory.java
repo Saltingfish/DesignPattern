@@ -6,4 +6,5 @@ package com.example.Factory;
 public interface abstract_Factory {
     public Food creatBread();
     public Food creatChicken();
+
 }
