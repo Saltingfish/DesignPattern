@@ -1,0 +1,4 @@
+LightOffCommand、LightonCommand 继承了Command
+RemoteLoader 实例化了Command子对象 、Lihgt
+
+LightOffCommand、LightonCommand 依赖与Light类
