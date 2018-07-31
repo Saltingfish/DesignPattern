@@ -1,8 +1,11 @@
+/*
 package com.example.outward;
 
+*/
 /**
  * Created  by kzp on 2018/7/26
- */
+ *//*
+
 public class HomeTheaterTestDrive {
     public static void main(String[] args) {
         HomeTheaterFacade homeTheater=new HomeTheaterFacade(amp,tuner,dvd,cd,porjecor,
@@ -11,3 +14,4 @@ public class HomeTheaterTestDrive {
         homeTheater.endMovie();
     }
 }
+*/

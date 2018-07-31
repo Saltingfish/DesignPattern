@@ -1,8 +1,11 @@
+/*
 package com.example.adapter;
 
+*/
 /**
  * Created  by kzp on 2018/7/26
- */
+ *//*
+
 public class DuckAdapter extends Turkey {
 
 
@@ -16,3 +19,4 @@ public class DuckAdapter extends Turkey {
 
     }
 }
+*/
