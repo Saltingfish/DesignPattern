@@ -1,8 +1,11 @@
+/*
 package com.example.outward;
 
+*/
 /**
  * Created  by kzp on 2018/7/26
- */
+ *//*
+
 public class HomeTheaterFacade {
 
     //这就是组合，我们会用到的子系统全部都在这里
@@ -49,3 +52,4 @@ public class HomeTheaterFacade {
 
     }
 }
+*/
