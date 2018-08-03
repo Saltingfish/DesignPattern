@@ -16,7 +16,7 @@ public class AlternatingDinerMenuIterator implements Iterator {
     }
 
     @Override
-    public boolean hasNext( ) {
+    public boolean hasNext() {
         if (position >= items.length || items[position] == null) {
             return false;
         } else {
