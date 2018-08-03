@@ -2,10 +2,10 @@ package com.example.composite;
 
 import java.util.*;
 
-public class CompositeIteratoe implements Iterator {
+public class CompositeIterator implements Iterator {
     Stack stack = new Stack();
 
-    public CompositeIteratoe(Iterator iterator) {
+    public CompositeIterator(Iterator iterator) {
         //将我们要遍历的顶层组合的迭代器传入。我们把它抛进一个堆栈数据结构中
         stack.push(iterator);
     }

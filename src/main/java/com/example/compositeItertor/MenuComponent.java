@@ -1,4 +1,4 @@
-package com.example.composite;
+package com.example.compositeItertor;
 
 import java.util.Iterator;
 
@@ -31,6 +31,10 @@ public abstract class MenuComponent {
     }
     //被菜单和菜单项所实现
     public void print() {
+        throw new UnsupportedOperationException();
+    }
+
+    public Iterator createIterator(){
         throw new UnsupportedOperationException();
     }
 }
