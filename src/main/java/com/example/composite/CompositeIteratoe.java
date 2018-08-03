@@ -12,7 +12,7 @@ public class CompositeIteratoe implements Iterator {
 
     @Override
     public boolean hasNext() {
-        if (stack.empty()) {
+        if (stack.empty( )) {
             return false;
         } else {
             //想要知道是否还有下一个元素，检查堆栈是否被清空
