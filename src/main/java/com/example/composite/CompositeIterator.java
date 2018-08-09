@@ -1,3 +1,4 @@
+/*
 package com.example.composite;
 
 import java.util.*;
@@ -48,3 +49,4 @@ public class CompositeIterator implements Iterator {
         throw new UnsupportedOperationException();
     }
 }
+*/

@@ -17,4 +17,5 @@ public class SimpleFactory {
         }
         return food;
     }
+
 }

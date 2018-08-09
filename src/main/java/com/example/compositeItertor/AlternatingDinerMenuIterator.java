@@ -1,3 +1,4 @@
+/*
 package com.example.compositeItertor;
 
 import java.util.Calendar;
@@ -36,3 +37,4 @@ public class AlternatingDinerMenuIterator implements Iterator {
         throw  new UnsupportedOperationException("Alternating Diner Menu Iterator does not support remove()");
     }
 }
+*/
