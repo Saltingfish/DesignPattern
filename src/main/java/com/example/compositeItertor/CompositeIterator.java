@@ -17,7 +17,7 @@ public class CompositeIterator implements Iterator {
     @Override
     public boolean hasNext() {
         if (stack.empty( )) {
-            return false;
+            return false ;
         } else {
             //想要知道是否还有下一个元素，检查堆栈是否被清空
             //如果已经空了表示没有下个元素
