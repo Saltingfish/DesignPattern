@@ -25,3 +25,6 @@
 组合模式 ：有数个对象的集合，他们彼此之间有“整体
 /部分”关系，想用一致的方法对待这些对象 P376 383
 
+总结：
+https://blog.csdn.net/feather_wch/article/details/78667653
+

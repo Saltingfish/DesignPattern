@@ -8,8 +8,8 @@ public class RemotrControlWithUndo {
     Command[] onCommands;
 
     Command[] offCommands;
-
-    Command undoCommand;//前一个命令将被记录在这里
+    //前一个命令将被记录在这里
+    Command undoCommand;
 
     public RemotrControlWithUndo() {
         onCommands = new Command[7];
@@ -21,7 +21,8 @@ public class RemotrControlWithUndo {
             offCommands[i] = noCommand;
 
         }
-        undoCommand = noCommand;//一开始，并没有所谓的"前"一个命令，所以将它设置成NoCommand的对象
+        //一开始，并没有所谓的"前"一个命令，所以将它设置成NoCommand的对象
+        undoCommand = noCommand;
 
     }
 
@@ -29,8 +30,8 @@ public class RemotrControlWithUndo {
         onCommands[slot] = onCommand;
         offCommands[slot] = offCommand;
     }
-
-    public void onButtonWasPushed(int slot) {//当按下按钮，我们取得这个命令并优先执行它，然后将它在undoCommand实例变量中。不管是开或关命令，我们处理方法都一样
+    //当按下按钮，我们取得这个命令并优先执行它，然后将它在undoCommand实例变量中。不管是开或关命令，我们处理方法都一样
+    public void onButtonWasPushed(int slot) {
         onCommands[slot].execute();
         undoCommand = onCommands[slot];
     }
